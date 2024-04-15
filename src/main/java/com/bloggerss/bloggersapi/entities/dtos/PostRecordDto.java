@@ -1,4 +1,4 @@
-package com.bloggerss.bloggersapi.dtos;
+package com.bloggerss.bloggersapi.entities.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 

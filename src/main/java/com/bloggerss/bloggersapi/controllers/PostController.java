@@ -1,7 +1,7 @@
 package com.bloggerss.bloggersapi.controllers;
 
 import com.bloggerss.bloggersapi.business.PostService;
-import com.bloggerss.bloggersapi.dtos.PostRecordDto;
+import com.bloggerss.bloggersapi.entities.dtos.PostRecordDto;
 import com.bloggerss.bloggersapi.entities.PostModel;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

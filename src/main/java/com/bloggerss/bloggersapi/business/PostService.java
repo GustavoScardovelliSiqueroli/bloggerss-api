@@ -1,6 +1,6 @@
 package com.bloggerss.bloggersapi.business;
 
-import com.bloggerss.bloggersapi.dtos.PostRecordDto;
+import com.bloggerss.bloggersapi.entities.dtos.PostRecordDto;
 import com.bloggerss.bloggersapi.entities.PostModel;
 import com.bloggerss.bloggersapi.repositories.PostRepository;
 import org.springframework.beans.BeanUtils;
