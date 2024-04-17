@@ -7,7 +7,7 @@ import java.util.UUID;
 
 
 @Entity
-@Table(name = "post_tb")
+@Table(name = "posts")
 public class PostModel {
 
     @Id

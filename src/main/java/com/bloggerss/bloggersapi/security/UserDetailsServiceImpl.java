@@ -1,4 +1,4 @@
-package com.bloggerss.bloggersapi.config;
+package com.bloggerss.bloggersapi.security;
 
 import com.bloggerss.bloggersapi.entities.UserModel;
 import com.bloggerss.bloggersapi.repositories.UserRepository;

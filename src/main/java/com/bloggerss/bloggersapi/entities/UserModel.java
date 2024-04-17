@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user_tb")
+@Table(name = "users")
 public class UserModel implements Serializable, UserDetails {
     private static final long serialVersionUIDLONG = 1L;
 
@@ -22,7 +22,7 @@ public class UserModel implements Serializable, UserDetails {
     @Column(nullable = false)
     private String password;
     @ManyToMany
-    @JoinTable(name = "TB_USERS_ROLES",
+    @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<RoleModel> roles;
