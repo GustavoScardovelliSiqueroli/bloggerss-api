@@ -20,7 +20,7 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<PostModel> createShirt(@RequestBody @Valid PostRecordDto postRecordDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.createPost(postRecordDto));
     }

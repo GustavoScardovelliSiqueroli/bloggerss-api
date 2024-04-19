@@ -1,8 +1,8 @@
-package com.bloggerss.bloggersapi.security;
+package com.bloggerss.bloggersapi.config.security;
 
+import com.bloggerss.bloggersapi.entities.UserAuthenticated;
 import com.bloggerss.bloggersapi.entities.UserModel;
 import com.bloggerss.bloggersapi.repositories.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,16 +11,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class AuthorizationService implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    UserRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserModel userModel = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
-        return new User(userModel.getUsername(), userModel.getPassword(), true, true, true,true, userModel.getAuthorities());
+        return repository.findByUsername(username)
+                .map(UserAuthenticated::new)
+                .orElseThrow(
+                        () -> new UsernameNotFoundException("User Not Found with username: " + username));
     }
 }
