@@ -52,9 +52,10 @@ public class SecurityConfig {
                                 .requestMatchers("/users/register").permitAll()
 
                                 .requestMatchers("/adm/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
 
                                 .requestMatchers(HttpMethod.POST, "/posts").hasRole("CREATOR")
-                                .requestMatchers(HttpMethod.GET, "/posts").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
                                 .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

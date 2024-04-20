@@ -18,8 +18,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private RoleRepository roleRepository;
 
     @PostMapping("register")
     public UserModel registerUser(@RequestBody @Valid UserRecordDto userRecordDto) {
@@ -29,16 +27,6 @@ public class UserController {
     @PostMapping("authenticate")
     public LoginResponseDTO authenticate(@RequestBody @Valid UserRecordDto authentication) {
         return userService.authenticate(authentication);
-    }
-
-    @GetMapping("roles")
-    public List<RoleModel> getRoles(){
-        return roleRepository.findAll();
-    }
-
-    @PutMapping("adm/{username}")
-    public UserModel giveAdmin(@PathVariable String username){
-        return userService.setUserADM(username);
     }
 
     @GetMapping
