@@ -1,4 +1,4 @@
 package com.bloggerss.bloggersapi.entities.dtos;
 
-public record LoginResponseDTO(String token) {
+public record LoginResponseDto(String token) {
 }

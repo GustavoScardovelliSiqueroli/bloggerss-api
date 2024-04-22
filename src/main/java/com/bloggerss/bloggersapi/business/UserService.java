@@ -4,17 +4,15 @@ import com.bloggerss.bloggersapi.config.security.JwtService;
 import com.bloggerss.bloggersapi.entities.RoleModel;
 import com.bloggerss.bloggersapi.entities.UserAuthenticated;
 import com.bloggerss.bloggersapi.entities.UserModel;
-import com.bloggerss.bloggersapi.entities.dtos.LoginResponseDTO;
+import com.bloggerss.bloggersapi.entities.dtos.LoginResponseDto;
 import com.bloggerss.bloggersapi.entities.dtos.UserRecordDto;
-import com.bloggerss.bloggersapi.enums.RoleName;
+import com.bloggerss.bloggersapi.entities.enums.RoleName;
 import com.bloggerss.bloggersapi.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,7 +31,7 @@ public class UserService {
     private JwtService jwtService;
 
     @Transactional
-    public LoginResponseDTO authenticate (UserRecordDto userRecordDto){
+    public LoginResponseDto authenticate (UserRecordDto userRecordDto){
         var usernamePassword = new UsernamePasswordAuthenticationToken(userRecordDto.username(), userRecordDto.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
@@ -41,7 +39,7 @@ public class UserService {
 
         var token = jwtService.generateToken((UserAuthenticated) userAuth);
 
-        return new LoginResponseDTO(token);
+        return new LoginResponseDto(token);
     }
 
     public UserModel registerPublicUser(UserRecordDto userRecordDto) {
@@ -63,8 +61,6 @@ public class UserService {
     }
 
     public UserModel setUserADM(String username) {
-        System.out.println(username);
-
         Optional<UserModel> user = userRepository.findByUsername(username);
         if (user.isEmpty()) throw new UsernameNotFoundException("Username not found.");
 
@@ -89,5 +85,26 @@ public class UserService {
 
     public List<UserModel> getUsers() {
         return userRepository.findAll();
+    }
+
+    public UserModel setUserCreator(String username) {
+        Optional<UserModel> user = userRepository.findByUsername(username);
+        if (user.isEmpty()) throw new UsernameNotFoundException("Username not found.");
+
+        UserModel userFound = user.get();
+
+        RoleModel admRole = new RoleModel();
+
+        RoleModel userRole = new RoleModel();
+        userRole.setRoleId(UUID.fromString("8c25f4c7-563f-4931-8f0c-ab5f53101f87"));
+        userRole.setRoleName(RoleName.ROLE_USER);
+
+        List<RoleModel> listRole = new ArrayList<RoleModel>();
+        listRole.add(admRole);
+        listRole.add(userRole);
+
+        userFound.setRoles(listRole);
+
+        return userRepository.save(userFound);
     }
 }

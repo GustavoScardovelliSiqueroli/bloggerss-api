@@ -1,6 +1,6 @@
 package com.bloggerss.bloggersapi.entities;
 
-import com.bloggerss.bloggersapi.enums.RoleName;
+import com.bloggerss.bloggersapi.entities.enums.RoleName;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -15,8 +15,8 @@ public class RoleModel implements Serializable, GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID roleId;
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
+    @Enumerated(EnumType.STRING)
     private RoleName roleName;
 
     @Override
