@@ -93,17 +93,15 @@ public class UserService {
 
         UserModel userFound = user.get();
 
-        RoleModel admRole = new RoleModel();
+        List<RoleModel> roles = userFound.getRoles();
 
-        RoleModel userRole = new RoleModel();
-        userRole.setRoleId(UUID.fromString("8c25f4c7-563f-4931-8f0c-ab5f53101f87"));
-        userRole.setRoleName(RoleName.ROLE_USER);
+        RoleModel creatorRole = new RoleModel();
+        creatorRole.setRoleId(UUID.fromString("c33db4bd-db0a-40f7-b0e3-0340b74f2f37"));
+        creatorRole.setRoleName(RoleName.ROLE_CREATOR);
 
-        List<RoleModel> listRole = new ArrayList<RoleModel>();
-        listRole.add(admRole);
-        listRole.add(userRole);
+        roles.add(creatorRole);
 
-        userFound.setRoles(listRole);
+        userFound.setRoles(roles);
 
         return userRepository.save(userFound);
     }

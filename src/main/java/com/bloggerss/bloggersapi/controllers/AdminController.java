@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("adm")
@@ -47,9 +48,12 @@ public class AdminController {
     }
 
     @PutMapping("creator/give/{username}")
-    public String giveCreator(@PathVariable String username) {
-        userService.setUserCreator(username);
-        return "asdsa";
+    public ResponseEntity<UserModel> giveCreator(@PathVariable String username) {
+        try{
+        return ResponseEntity.status(HttpStatus.OK).body(userService.setUserCreator(username));
+        }catch (UsernameNotFoundException exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
 
