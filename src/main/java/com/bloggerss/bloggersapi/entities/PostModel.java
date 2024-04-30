@@ -13,9 +13,9 @@ public class PostModel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID postId;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "user_id")
-    private UserModel user;
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserModel userId;
     @Column(nullable = false)
     private String title;
     @Lob
@@ -24,6 +24,13 @@ public class PostModel {
     @Temporal(TemporalType.DATE)
     private Date createdAt = new Date();
 
+    public UserModel getUser() {
+        return userId;
+    }
+
+    public void setUser(UserModel userId) {
+        this.userId = userId;
+    }
     public UUID getPostId() {
         return postId;
     }
