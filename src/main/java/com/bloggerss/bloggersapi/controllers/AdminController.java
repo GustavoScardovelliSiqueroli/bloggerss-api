@@ -43,8 +43,12 @@ public class AdminController {
     }
 
     @PutMapping("give/{username}")
-    public ResponseEntity<UserModel> giveAdmin(@PathVariable String username) {
+    public ResponseEntity giveAdmin(@PathVariable String username) throws SQLIntegrityConstraintViolationException {
+        try{
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.setUserADM(username));
+        }catch (UsernameNotFoundException ex){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username not foun.");
+        }
     }
 
     @PutMapping("creator/give/{username}")

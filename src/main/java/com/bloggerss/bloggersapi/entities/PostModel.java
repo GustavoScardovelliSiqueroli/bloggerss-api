@@ -13,7 +13,7 @@ public class PostModel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID postId;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     private UserModel user;
     @Column(nullable = false)

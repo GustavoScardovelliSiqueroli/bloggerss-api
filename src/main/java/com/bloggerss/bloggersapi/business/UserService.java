@@ -35,9 +35,10 @@ public class UserService {
     private JwtService jwtService;
     @Autowired
     private RoleService roleService;
+    private List<RoleModel> newRoles;
 
     @Transactional
-    public LoginResponseDto authenticate (UserRecordDto userRecordDto){
+    public LoginResponseDto authenticate(UserRecordDto userRecordDto) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(userRecordDto.username(), userRecordDto.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
@@ -56,10 +57,10 @@ public class UserService {
         String passwordEncrypted = encrypt.encode(newUser.getPassword());
 
         Optional<RoleModel> role = roleRepository.findByRoleName(RoleName.ROLE_USER);
-        if (role.isEmpty()){
+        if (role.isEmpty()) {
             RoleModel roleUser = roleService.registerRole(new RoleRecordDto(RoleName.ROLE_USER));
             newUser.setRoles(List.of(roleUser));
-        }else {
+        } else {
             newUser.setRoles(List.of(role.get()));
         }
 
@@ -69,25 +70,22 @@ public class UserService {
         return newUser;
     }
 
-    public UserModel setUserADM(String username) {
+    public UserModel setUserADM(String username) throws SQLIntegrityConstraintViolationException {
         Optional<UserModel> user = userRepository.findByUsername(username);
         if (user.isEmpty()) throw new UsernameNotFoundException("Username not found.");
 
         UserModel userFound = user.get();
 
-        RoleModel admRole = new RoleModel();
-        admRole.setRoleId(UUID.fromString("f0acc290-c6cc-4017-b4d3-257a6bde1bb9"));
-        admRole.setRoleName(RoleName.ROLE_ADMIN);
+        List<RoleModel> newRoles = userFound.getRoles();
+        Optional<RoleModel> role = roleRepository.findByRoleName(RoleName.ROLE_ADMIN);
+        if (role.isEmpty()) {
+            RoleModel admRole = roleService.registerRole(new RoleRecordDto(RoleName.ROLE_ADMIN));
+            newRoles.add(admRole);
+        } else {
+            newRoles.add(role.get());
+        }
 
-        RoleModel userRole = new RoleModel();
-        userRole.setRoleId(UUID.fromString("8c25f4c7-563f-4931-8f0c-ab5f53101f87"));
-        userRole.setRoleName(RoleName.ROLE_USER);
-
-        List<RoleModel> listRole = new ArrayList<RoleModel>();
-        listRole.add(admRole);
-        listRole.add(userRole);
-
-        userFound.setRoles(listRole);
+        userFound.setRoles(newRoles);
 
         return userRepository.save(userFound);
     }
@@ -114,4 +112,5 @@ public class UserService {
 
         return userRepository.save(userFound);
     }
+
 }
