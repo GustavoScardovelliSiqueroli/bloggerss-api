@@ -51,8 +51,8 @@ public class SecurityConfig {
                                 .requestMatchers("/users/authenticate").permitAll()
                                 .requestMatchers("/users/register").permitAll()
 
-                                .requestMatchers("/adm/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
+                                .requestMatchers("/adm/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
 
                                 .requestMatchers(HttpMethod.POST, "/posts").hasRole("CREATOR")
                                 .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()

@@ -43,11 +43,11 @@ public class AdminController {
     }
 
     @PutMapping("give/{username}")
-    public ResponseEntity giveAdmin(@PathVariable String username) throws SQLIntegrityConstraintViolationException {
+    public ResponseEntity<Object> giveAdmin(@PathVariable String username) throws SQLIntegrityConstraintViolationException {
         try{
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.setUserADM(username));
         }catch (UsernameNotFoundException ex){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username not foun.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username not found.");
         }
     }
 
@@ -55,7 +55,7 @@ public class AdminController {
     public ResponseEntity<UserModel> giveCreator(@PathVariable String username) {
         try{
         return ResponseEntity.status(HttpStatus.OK).body(userService.setUserCreator(username));
-        }catch (UsernameNotFoundException exception){
+        }catch (UsernameNotFoundException | SQLIntegrityConstraintViolationException exception){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }

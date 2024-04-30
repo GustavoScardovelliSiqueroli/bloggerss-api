@@ -94,7 +94,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public UserModel setUserCreator(String username) {
+    public UserModel setUserCreator(String username) throws SQLIntegrityConstraintViolationException {
         Optional<UserModel> user = userRepository.findByUsername(username);
         if (user.isEmpty()) throw new UsernameNotFoundException("Username not found.");
 
@@ -102,11 +102,13 @@ public class UserService {
 
         List<RoleModel> roles = userFound.getRoles();
 
-        RoleModel creatorRole = new RoleModel();
-        creatorRole.setRoleId(UUID.fromString("c33db4bd-db0a-40f7-b0e3-0340b74f2f37"));
-        creatorRole.setRoleName(RoleName.ROLE_CREATOR);
-
-        roles.add(creatorRole);
+        Optional<RoleModel> role = roleRepository.findByRoleName(RoleName.ROLE_CREATOR);
+        if (role.isEmpty()) {
+            RoleModel creatorRole = roleService.registerRole(new RoleRecordDto(RoleName.ROLE_CREATOR));
+            roles.add(creatorRole);
+        } else {
+            roles.add(role.get());
+        }
 
         userFound.setRoles(roles);
 
