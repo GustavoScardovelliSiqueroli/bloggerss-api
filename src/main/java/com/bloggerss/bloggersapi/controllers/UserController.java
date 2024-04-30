@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("register")
-    public ResponseEntity<UserModel> registerUser(@RequestBody @Valid UserRecordDto userRecordDto) {
+    public ResponseEntity<UserModel> registerUser(@RequestBody @Valid UserRecordDto userRecordDto) throws SQLIntegrityConstraintViolationException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerPublicUser(userRecordDto));
     }
 

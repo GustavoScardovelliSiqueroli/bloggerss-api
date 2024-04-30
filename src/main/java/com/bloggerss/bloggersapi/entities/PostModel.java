@@ -13,6 +13,9 @@ public class PostModel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID postId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserModel user;
     @Column(nullable = false)
     private String title;
     @Lob
